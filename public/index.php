@@ -10,12 +10,17 @@ define('VIEWS', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEP
 
 $router = new Router();
 
-$router->register('/', [HomeController::class, 'index']);
+$router->get('/', [HomeController::class, 'index']);
 
-$router->register('/json', [HomeController::class, 'json']);
+$router->get('/json', [HomeController::class, 'json']);
 
-$router->register('/about', function () {
+$router->post('/users', [HomeController::class, 'store']);
+
+$router->get('/about', function () {
     return 'AboutPage';
 });
 
-(new App($router, $_SERVER['REQUEST_URI']))->run();
+(new App($router, [
+    'uri' => $_SERVER['REQUEST_URI'],
+    'method' => $_SERVER['REQUEST_METHOD'],
+]))->run();
